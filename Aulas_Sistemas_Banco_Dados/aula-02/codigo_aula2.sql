@@ -1,4 +1,4 @@
--- Active: 1787610991418@@127.0.0.1@5432@bd_aula@public
+-- Active: 1787702120015@@127.0.0.1@5432@bd_aula@public
 DROP TABLE IF EXISTS notas_alunos;
 
 CREATE TABLE notas_alunos(
@@ -130,3 +130,30 @@ FROM
     notas_alunos
 GROUP BY
     disciplina;
+
+--DUAS FUNCOES DE AGREGACAO 
+--(AVG) MEDIA ARITMETICA DOS VALORES DO GRUPO
+--(COUNT(*)) QUNATIDADE DE LINHAS DO GRUPO
+
+SELECT 
+    disciplina, 
+    COUNT(*) "Avaliações" --CONTA TODAS AS LINHAS DE CADA UM DOS ELEMENTOS DO AGRUPAMENTO
+    AVG(nota) AS "Média"  --AS É COMO SE FOSSE UM COMANDO PARA DAR NOME AO COMANDO
+FROM
+    notas_alunos
+GROUP BY
+    disciplina;
+
+SELECT 
+    disciplina, 
+    COUNT(*) "Avaliações" 
+    ROUND(AVG(nota), 2) AS "Média"  --ROUND , 2 ADICIONADOS AO COMANDO PARA DIZER QUANTAS LINHAS TERÃO APOS A VIRGULA 
+FROM
+    notas_alunos
+GROUP BY
+    disciplina;
+
+
+
+
+
