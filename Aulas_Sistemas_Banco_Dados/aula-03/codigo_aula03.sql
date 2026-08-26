@@ -107,7 +107,7 @@ SELECT
 
 FROM
     vendas_itens
-WHERE
+WHERE --PROCURA
     produto_id = 10;
 
 --PROCURAR TODOS OS PRODUTOS E ADD 10%
@@ -120,7 +120,13 @@ SELECT
 FROM
     vendas_itens;
 
-
+SELECT 
+    'Venda ' || venda_id || ', produto ' || produto_id AS "Descrição",
+    valor_unitario
+FROM
+    vendas_itens
+WHERE
+    venda_id = 2010;
 
 
 
