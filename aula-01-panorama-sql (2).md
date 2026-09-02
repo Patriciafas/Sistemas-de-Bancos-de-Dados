@@ -33,11 +33,11 @@
 
 Este documento percorre, em um exemplo mínimo, o caminho que vai da descrição de um recorte do mundo real até a obtenção de respostas a partir dos dados armazenados. O percurso é composto por quatro etapas, correspondentes às quatro funções de um Sistema Gerenciador de Banco de Dados (SGBD):
 
-| Etapa | Descrição | Instrução SQL correspondente |
-|---|---|---|
-| Definir | Especificar tipos, estruturas e restrições dos dados | `CREATE TABLE` |
-| Construir | Armazenar os dados no meio controlado pelo SGBD | `INSERT` |
-| Manipular | Consultar os dados armazenados | `SELECT` |
+| Etapa        | Descrição                                                 | Instrução SQL correspondente   |
+| ------------ | --------------------------------------------------------- | ------------------------------ |
+| Definir      | Especificar tipos, estruturas e restrições dos dados      | `CREATE TABLE`                 |
+| Construir    | Armazenar os dados no meio controlado pelo SGBD           | `INSERT`                       |
+| Manipular    | Consultar os dados armazenados                            | `SELECT`                       |
 | Compartilhar | Permitir acesso simultâneo de vários usuários e programas | conexão do cliente ao servidor |
 
 O exemplo é deliberadamente pequeno. O interesse não está no tamanho do problema, e sim na compreensão de cada decisão tomada ao longo do caminho.
@@ -176,10 +176,10 @@ O asterisco significa "todas as colunas". O resultado esperado é um conjunto va
 
 O resultado vazio confirma uma distinção conceitual fundamental:
 
-| Conceito | Definição | O que foi executado |
-|---|---|---|
-| **Esquema** | Descrição da estrutura: tabelas, colunas, tipos e restrições | `CREATE TABLE` |
-| **Instância** | Conjunto de dados presentes no banco em um dado momento | ainda nada |
+| Conceito      | Definição                                                    | O que foi executado |
+| ------------- | ------------------------------------------------------------ | ------------------- |
+| **Esquema**   | Descrição da estrutura: tabelas, colunas, tipos e restrições | `CREATE TABLE`      |
+| **Instância** | Conjunto de dados presentes no banco em um dado momento      | ainda nada          |
 
 O esquema é estável e muda raramente. A instância muda a cada operação de escrita. A confusão entre os dois origina perguntas como "ao apagar os dados, a tabela desaparece". Não desaparece: `DELETE` atua sobre a instância, `DROP TABLE` atua sobre o esquema. As duas operações têm naturezas e riscos diferentes.
 
@@ -239,22 +239,22 @@ A mensagem descreve exatamente o que ocorreu: a operação foi recusada porque a
 
 Tabela `curso`:
 
-| id_curso | nome |
-|---|---|
-| 1 | Sistemas de Informacao |
-| 2 | Administracao |
-| 3 | Direito |
-| 4 | Ciencia da Computacao |
+| id_curso | nome                   |
+| -------- | ---------------------- |
+| 1        | Sistemas de Informacao |
+| 2        | Administracao          |
+| 3        | Direito                |
+| 4        | Ciencia da Computacao  |
 
 Tabela `aluno`:
 
-| id_aluno | nome | id_curso |
-|---|---|---|
-| 1 | Ana Breatriz Souza | 1 |
-| 2 | Carlos Henrique Lima | 1 |
-| 3 | Daniela Martins | 2 |
-| 4 | Eduardo Pereira | 3 |
-| 5 | Fernanda Rocha | 1 |
+| id_aluno | nome                 | id_curso |
+| -------- | -------------------- | -------- |
+| 1        | Ana Breatriz Souza   | 1        |
+| 2        | Carlos Henrique Lima | 1        |
+| 3        | Daniela Martins      | 2        |
+| 4        | Eduardo Pereira      | 3        |
+| 5        | Fernanda Rocha       | 1        |
 
 Nota relevante para as seções seguintes: o curso 4, `Ciencia da Computacao`, não possui nenhum aluno. A situação é legítima e está prevista na terceira regra do minimundo.
 
@@ -277,13 +277,13 @@ ORDER BY
 
 Resultado:
 
-| id_aluno | nome | id_curso |
-|---|---|---|
-| 1 | Ana Breatriz Souza | 1 |
-| 2 | Carlos Henrique Lima | 1 |
-| 3 | Daniela Martins | 2 |
-| 4 | Eduardo Pereira | 3 |
-| 5 | Fernanda Rocha | 1 |
+| id_aluno | nome                 | id_curso |
+| -------- | -------------------- | -------- |
+| 1        | Ana Breatriz Souza   | 1        |
+| 2        | Carlos Henrique Lima | 1        |
+| 3        | Daniela Martins      | 2        |
+| 4        | Eduardo Pereira      | 3        |
+| 5        | Fernanda Rocha       | 1        |
 
 Elementos da consulta:
 
@@ -318,11 +318,11 @@ ORDER BY
 
 Resultado:
 
-| nome | id_curso |
-|---|---|
-| Fernanda Rocha | 1 |
-| Carlos Henrique Lima | 1 |
-| Ana Breatriz Souza | 1 |
+| nome                 | id_curso |
+| -------------------- | -------- |
+| Fernanda Rocha       | 1        |
+| Carlos Henrique Lima | 1        |
+| Ana Breatriz Souza   | 1        |
 
 A condição `id_curso = 1` é avaliada linha a linha. Cada linha para a qual a condição resulta em verdadeiro entra no resultado, e as demais são descartadas.
 
@@ -350,9 +350,9 @@ WHERE
 
 Resultado:
 
-| curso | id_curso |
-|---|---|
-| Sistemas de Informacao | 1 |
+| curso                  | id_curso |
+| ---------------------- | -------- |
+| Sistemas de Informacao | 1        |
 
 **`curso c`**
 Alias de tabela. A tabela `curso` passa a ser referenciável como `c` no restante da consulta. Em consultas de tabela única o ganho é apenas de concisão. Em consultas que envolvem várias tabelas o alias se torna indispensável, porque duas tabelas podem possuir colunas de mesmo nome e o prefixo elimina a ambiguidade.
@@ -412,13 +412,13 @@ ORDER BY
 
 Resultado:
 
-| aluno | curso |
-|---|---|
-| Daniela Martins | Administracao |
-| Eduardo Pereira | Direito |
-| Ana Breatriz Souza | Sistemas de Informacao |
+| aluno                | curso                  |
+| -------------------- | ---------------------- |
+| Daniela Martins      | Administracao          |
+| Eduardo Pereira      | Direito                |
+| Ana Breatriz Souza   | Sistemas de Informacao |
 | Carlos Henrique Lima | Sistemas de Informacao |
-| Fernanda Rocha | Sistemas de Informacao |
+| Fernanda Rocha       | Sistemas de Informacao |
 
 Leitura da consulta:
 
@@ -460,11 +460,11 @@ ORDER BY
 
 Resultado:
 
-| curso | qtd_alunos |
-|---|---|
-| Administracao | 1 |
-| Direito | 1 |
-| Sistemas de Informacao | 3 |
+| curso                  | qtd_alunos |
+| ---------------------- | ---------- |
+| Administracao          | 1          |
+| Direito                | 1          |
+| Sistemas de Informacao | 3          |
 
 Elementos novos:
 
@@ -505,14 +505,14 @@ Ordem lógica de avaliação:
 FROM  ->  WHERE  ->  GROUP BY  ->  HAVING  ->  SELECT  ->  ORDER BY
 ```
 
-| Ordem | Cláusula | Operação realizada |
-|---|---|---|
-| 1 | `FROM` | Determina a origem das linhas, incluindo junções |
-| 2 | `WHERE` | Descarta linhas que não satisfazem a condição |
-| 3 | `GROUP BY` | Agrupa as linhas restantes |
-| 4 | `HAVING` | Descarta grupos que não satisfazem a condição |
-| 5 | `SELECT` | Calcula as expressões e atribui os alias |
-| 6 | `ORDER BY` | Ordena o resultado já projetado |
+| Ordem | Cláusula   | Operação realizada                               |
+| ----- | ---------- | ------------------------------------------------ |
+| 1     | `FROM`     | Determina a origem das linhas, incluindo junções |
+| 2     | `WHERE`    | Descarta linhas que não satisfazem a condição    |
+| 3     | `GROUP BY` | Agrupa as linhas restantes                       |
+| 4     | `HAVING`   | Descarta grupos que não satisfazem a condição    |
+| 5     | `SELECT`   | Calcula as expressões e atribui os alias         |
+| 6     | `ORDER BY` | Ordena o resultado já projetado                  |
 
 Três consequências decorrem diretamente dessa ordem, e todas foram observadas nas seções anteriores.
 
@@ -537,11 +537,11 @@ As convenções a seguir valem para todo o código escrito na disciplina.
 
 ### 13.1 Caixa
 
-| Elemento | Caixa | Exemplo |
-|---|---|---|
-| Palavras reservadas | maiúscula | `SELECT`, `FROM`, `CREATE TABLE`, `NOT NULL` |
-| Nomes de tabela e coluna | minúscula, com sublinhado | `aluno`, `id_curso`, `data_matricula` |
-| Tipos de dados | maiúscula, de forma consistente | `INTEGER`, `VARCHAR(60)` |
+| Elemento                 | Caixa                           | Exemplo                                      |
+| ------------------------ | ------------------------------- | -------------------------------------------- |
+| Palavras reservadas      | maiúscula                       | `SELECT`, `FROM`, `CREATE TABLE`, `NOT NULL` |
+| Nomes de tabela e coluna | minúscula, com sublinhado       | `aluno`, `id_curso`, `data_matricula`        |
+| Tipos de dados           | maiúscula, de forma consistente | `INTEGER`, `VARCHAR(60)`                     |
 
 A convenção não é imposta pelo SGBD. O PostgreSQL aceita `select` e `SELECT` indistintamente. Ela existe porque o contraste visual entre a estrutura do comando e os nomes do domínio torna a leitura mais rápida.
 
