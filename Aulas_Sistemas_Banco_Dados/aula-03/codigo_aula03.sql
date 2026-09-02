@@ -337,3 +337,11 @@ ORDER BY
     valor_final DESC,
     vezes_vendido DESC; 
 
+SELECT
+    venda_id,
+    SUM(valor_unitario) AS valor_total,
+    COUNT(*) AS itens
+FROM
+    vendas_itens
+GROUP BY    
+    venda_id;
