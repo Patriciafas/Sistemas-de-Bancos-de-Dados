@@ -1,4 +1,4 @@
--- Active: 1788215157671@@127.0.0.1@5432@bd_vendas@public
+-- Active: 1788307539961@@127.0.0.1@5432@bd_vendas@public
 DROP TABLE IF EXISTS vendas_itens;
 
 CREATE TABLE vendas_itens(
@@ -245,4 +245,95 @@ WHERE
     observacao NOT IN ('Entrega expressa') -- SELECIONA O INTERVALO Entrega expressa OU SEJA, NAO IRA MOSTRAR AS ENTREGAS EXPRESSAS
     OR observacao IS NULL; --TAMBEM BUSCARA TODOS OS VALORES NULL PARA QUE A PESQUISA SEJA MAIS COMPLETA
 
+SELECT 
+    venda_id,
+    produto_id,
+    COALESCE (observacao, 'Sua observacao') AS "observacao"
+FROM 
+    vendas_itens
+WHERE 
+    venda_id = 2001;
+
+SELECT DISTINCT 
+    valor_unitario
+FROM
+    vendas_itens
+ORDER BY
+    valor_unitario;
+
+SELECT DISTINCT
+    produto_id
+FROM
+    vendas_itens
+ORDER BY
+    produto_id;
+
+SELECT
+    venda_id,
+    produto_id,
+    valor_unitario
+FROM
+    vendas_itens
+ORDER BY 
+    valor_unitario DESC,
+    venda_id ASC,
+    produto_id ASC;
+
+SELECT
+    venda_id
+    observacao
+FROM
+    vendas_itens
+ORDER BY 
+    observacao ASC NULLS FIRST;
+
+SELECT
+    venda_id,
+    produto_id,
+    valor_unitario
+FROM
+    vendas_itens
+ORDER BY
+    valor_unitario DESC,
+    venda_id ASC,
+    produto_id ASC
+LIMIT 5 OFFSET 2; --LIMIT É O ATE QUANDO EU QUERO QUE APARECE E OFFSET E ATE QUAL EU NAO QUERO QUE APARECA
+
+SELECT
+    COUNT(*) AS itens,
+    COUNT(observacao) AS itens_com_observacao,
+    COUNT( DISTINCT venda_id) AS vendas,
+    COUNT(DISTINCT produto_id) AS produtos,
+    SUM(valor_unitario) AS soma,
+    ROUND(AVG (valor_unitario), 2) AS "media", --ROUND COLOCA A QUANTIDADE DE CASAS DECIMAIS QUE VOCE QUISER 
+    MIN(valor_unitario) AS menor_valor_unitario,
+    MAX(valor_unitario) AS maior_valor_unitario
+FROM
+    vendas_itens;
+
+SELECT
+    venda_id,
+    SUM(valor_unitario) AS valor_total,
+    data_venda
+FROM
+    vendas_itens
+GROUP BY
+    venda_id, -- VAI SOMAR TODOS OS VALORES DE CADA VENDA
+    data_venda
+
+ORDER BY
+    valor_total ASC; --VALOR TOTAL FOI CRIADO NO ALIAS 
+
+
+SELECT
+    produto_id,
+    SUM(valor_unitario) AS valor_final, -- SUM = SOMA
+    COUNT(*) AS vezes_vendido -- COUNT = QUANTOS PRODUTOS ELE DEVE OLHAR, (*) TODAS AS LINHAS
+FROM
+    vendas_itens
+GROUP BY
+    produto_id
+ORDER BY
+    valor_final DESC,
+    vezes_vendido DESC; 
 
