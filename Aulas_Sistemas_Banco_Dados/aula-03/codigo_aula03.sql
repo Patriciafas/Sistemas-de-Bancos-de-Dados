@@ -337,11 +337,33 @@ ORDER BY
     valor_final DESC,
     vezes_vendido DESC; 
 
-SELECT
+SELECT --QUARTO COMANDO REALIZANDO OQUE FOI PEDIDO
     venda_id,
     SUM(valor_unitario) AS valor_total,
     COUNT(*) AS itens
+
+FROM -- COMECA NESTE COMANDO PROCURANDO A TABELA 
+    vendas_itens
+
+GROUP BY -- SEGUNDO COMANDO AGRUPANDO O GRUPO PEDIDO, NESTE CASO VENDA_ID
+    venda_id
+
+HAVING -- TERCEIRO FILTRANDO OQUE ESTA SENDO PEDIDO
+    SUM(valor_unitario) > 400
+ORDER BY 
+    valor_total DESC; 
+
+--WHERE FILTRA LINHAS HAVING FILTRA GRUPOS DE DADOS 
+
+SELECT
+    venda_id,
+    COUNT(*) AS itens,
+    SUM(valor_unitario) AS valor_total
 FROM
     vendas_itens
-GROUP BY    
+GROUP BY
+    venda_id
+HAVING
+    COUNT(*) >= 4
+ORDER BY
     venda_id;
