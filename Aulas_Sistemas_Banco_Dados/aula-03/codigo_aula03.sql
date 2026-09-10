@@ -12,6 +12,7 @@ CREATE TABLE vendas_itens(
 
 SELECT * FROM vendas_itens;
 
+
 -- Active: 1787177433004@@127.0.0.1@5432@bd_vendas@public
 DROP TABLE IF EXISTS vendas_itens;
 

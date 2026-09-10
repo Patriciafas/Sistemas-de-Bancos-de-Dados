@@ -1,9 +1,8 @@
-# Aula 01. Panorama: o ciclo completo em SQL
+# Aula 01 — Panorama: o ciclo completo em SQL
 
-**Disciplina:** Sistemas de Banco de Dados I. Sistemas de Informação. UNIPAM.
-**Item da ementa:** visão geral, anterior ao item 1. Antecipa 4.1, 4.2, 4.3, 4.4 e 7.1.
-**Referência:** ELMASRI, R. NAVATHE, S. *Sistemas de Banco de Dados*. 7. ed. São Paulo: Pearson.
-**Ambiente:** PostgreSQL 17 em contêiner Docker, acessado pela extensão Database Client.
+> **Disciplina:** Sistemas de Banco de Dados I · Sistemas de Informação · UNIPAM  
+> **Referência:** ELMASRI, R. NAVATHE, S. *Sistemas de Banco de Dados*. 7. ed. São Paulo: Pearson.  
+> **Ambiente:** PostgreSQL 17 em contêiner Docker, acessado pela extensão Database Client.
 
 ---
 
@@ -28,7 +27,6 @@
 17. Referências
 
 ---
-
 ## 1. Objetivo
 
 Este documento percorre, em um exemplo mínimo, o caminho que vai da descrição de um recorte do mundo real até a obtenção de respostas a partir dos dados armazenados. O percurso é composto por quatro etapas, correspondentes às quatro funções de um Sistema Gerenciador de Banco de Dados (SGBD):
@@ -43,7 +41,6 @@ Este documento percorre, em um exemplo mínimo, o caminho que vai da descrição
 O exemplo é deliberadamente pequeno. O interesse não está no tamanho do problema, e sim na compreensão de cada decisão tomada ao longo do caminho.
 
 ---
-
 ## 2. Escopo e advertência de leitura
 
 O documento apresenta duas categorias de conteúdo, e a distinção entre elas orienta o estudo.
@@ -65,7 +62,6 @@ consulta simples  ->  operadores  ->  filtros
 As seções preliminares deste documento antecipam os três últimos degraus. A antecipação é útil como referência, não como ponto de partida. O estudo sistemático da linguagem começa no arquivo 02.
 
 ---
-
 ## 3. O minimundo: cursos e alunos
 
 Um banco de dados não representa o mundo inteiro. Representa uma fatia dele, escolhida e delimitada. Essa fatia recebe o nome de **minimundo**, ou universo de discurso.
@@ -94,7 +90,6 @@ curso                       aluno
 ```
 
 ---
-
 ## 4. Definição das tabelas com `CREATE TABLE`
 
 A instrução `CREATE TABLE` pertence à **Linguagem de Definição de Dados** (DDL, *Data Definition Language*). Ela não armazena dado algum. Declara a estrutura que os dados deverão obedecer.
@@ -162,7 +157,6 @@ ERROR:  relation "curso" does not exist
 A dependência é uma primeira manifestação concreta da integridade referencial: a estrutura de destino precisa existir antes que alguém possa apontar para ela.
 
 ---
-
 ## 5. Verificação da estrutura criada
 
 Após a execução da DDL, as tabelas existem e estão vazias. A verificação se faz com a consulta mais simples possível:
@@ -184,7 +178,6 @@ O resultado vazio confirma uma distinção conceitual fundamental:
 O esquema é estável e muda raramente. A instância muda a cada operação de escrita. A confusão entre os dois origina perguntas como "ao apagar os dados, a tabela desaparece". Não desaparece: `DELETE` atua sobre a instância, `DROP TABLE` atua sobre o esquema. As duas operações têm naturezas e riscos diferentes.
 
 ---
-
 ## 6. Inserção de dados com `INSERT`
 
 A instrução `INSERT` pertence à **Linguagem de Manipulação de Dados** (DML, *Data Manipulation Language*).
@@ -259,7 +252,6 @@ Tabela `aluno`:
 Nota relevante para as seções seguintes: o curso 4, `Ciencia da Computacao`, não possui nenhum aluno. A situação é legítima e está prevista na terceira regra do minimundo.
 
 ---
-
 ## 7. Consulta de recuperação com `SELECT`
 
 A instrução `SELECT` recupera dados. É a instrução mais usada da linguagem e a que possui maior número de cláusulas.
@@ -299,7 +291,6 @@ Ordena o resultado. `ASC` produz ordem crescente e é o comportamento padrão, p
 Um ponto que costuma gerar equívoco: **sem `ORDER BY`, a ordem das linhas retornadas não é garantida**. O fato de um resultado aparecer ordenado sem `ORDER BY` é coincidência decorrente do plano de execução escolhido, não uma promessa do SGBD. Sempre que a ordem for relevante, ela precisa ser declarada.
 
 ---
-
 ## 8. Filtro de linhas com `WHERE`
 
 A cláusula `WHERE` restringe quais linhas compõem o resultado. A operação chama-se **seleção**, e é distinta da projeção descrita na seção 7: a projeção escolhe colunas, a seleção escolhe linhas.
@@ -333,7 +324,6 @@ Observa-se que a coluna usada no filtro, `id_curso`, aparece também na projeç�
 O tratamento completo de `WHERE`, com os demais operadores de comparação, ocorre nos arquivos 04 e 06.
 
 ---
-
 ## 9. Alias de tabela e de coluna
 
 Um **alias** é um nome alternativo atribuído a uma tabela ou a uma coluna dentro de uma consulta.
@@ -387,7 +377,6 @@ A razão está na ordem lógica de execução, tratada na seção 12.
 A consulta escrita em sala continha `c.id_Curso`, com letra maiúscula no meio. O comando funciona, porque o PostgreSQL converte todo identificador não delimitado por aspas para minúsculas antes de resolvê-lo. Ainda assim, a grafia inconsistente deve ser evitada, pelas razões da seção 13.
 
 ---
-
 ## 10. Junção de tabelas: visão preliminar
 
 > **Conteúdo preliminar.** A junção é tratada formalmente no arquivo 25, depois que o modelo relacional, as restrições e a modelagem conceitual estiverem estabelecidos. O que segue é uma apresentação do problema que a junção resolve.
@@ -435,7 +424,6 @@ As duas tabelas possuem coluna chamada `nome`. Sem os prefixos `a.` e `c.`, a co
 O curso `Ciencia da Computacao` não aparece no resultado. Como não possui nenhum aluno, nenhuma linha de `aluno` corresponde a ele, e a forma de junção utilizada descarta linhas sem correspondência. O comportamento é correto para a pergunta formulada, que era sobre alunos, e passa a ser um problema quando a pergunta for sobre cursos. A distinção entre junção interna e junção externa, que resolve exatamente esse caso, é conteúdo do arquivo 25.
 
 ---
-
 ## 11. Agregação e agrupamento: visão preliminar
 
 > **Conteúdo preliminar.** Funções de agregação, `GROUP BY` e `HAVING` são tratados no arquivo 26.
@@ -488,7 +476,6 @@ Aqui o alias definido no `SELECT` pode ser usado, ao contrário do que ocorre em
 `Ciencia da Computacao` continua fora do resultado, pela mesma razão da seção 10. A pergunta "quantos alunos há em cada curso" tem, para esse curso, a resposta zero, e essa resposta não aparece. Trata-se de um resultado incompleto, cuja correção depende de conteúdo ainda não apresentado.
 
 ---
-
 ## 12. A ordem lógica de execução
 
 A ordem em que as cláusulas são escritas não é a ordem em que são avaliadas. Compreender essa diferença explica vários comportamentos aparentemente arbitrários da linguagem.
@@ -530,7 +517,6 @@ Esta ordem é **lógica**, não física. O otimizador do SGBD é livre para exec
 O assunto é retomado em detalhe no arquivo 02, onde cada etapa é examinada isoladamente.
 
 ---
-
 ## 13. Convenções de escrita
 
 As convenções a seguir valem para todo o código escrito na disciplina.
@@ -566,7 +552,6 @@ A lista completa de palavras reservadas consta do material de apoio, em `referen
 Cada cláusula principal em sua própria linha, com os argumentos recuados. O padrão adotado facilita a leitura de consultas longas e torna evidente, na inspeção visual, qual cláusula está ausente.
 
 ---
-
 ## 14. Script consolidado
 
 ```sql
@@ -689,7 +674,6 @@ ORDER BY
 ```
 
 ---
-
 ## 15. Exercícios
 
 Os exercícios utilizam as tabelas `curso` e `aluno` com os dados da seção 6.
@@ -729,7 +713,6 @@ Os exercícios utilizam as tabelas `curso` e `aluno` com os dados da seção 6.
 11. Reescrever a consulta do exercício 10 de forma que ela seja executada com sucesso.
 
 ---
-
 ## 16. Gabarito
 
 **1.**
@@ -813,7 +796,6 @@ WHERE nome = 'Direito';
 A expressão original é repetida no `WHERE`, em lugar do alias.
 
 ---
-
 ## 17. Referências
 
 ELMASRI, Ramez. NAVATHE, Shamkant B. *Sistemas de Banco de Dados*. 7. ed. São Paulo: Pearson, 2018. Capítulos 1, 3 e 6.
