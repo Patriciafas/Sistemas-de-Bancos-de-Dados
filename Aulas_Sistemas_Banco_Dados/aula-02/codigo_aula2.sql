@@ -153,6 +153,15 @@ FROM
 GROUP BY
     disciplina;
 
+SELECT 
+    turma, 
+    COUNT(*) "Avaliações" 
+    MAX (nota) AS "Maior nota"   
+    ROUND(AVG(nota), 2) AS "Média"  --ROUND , 2 ADICIONADOS AO COMANDO PARA DIZER QUANTAS LINHAS TERÃO APOS A VIRGULA 
+FROM
+    notas_alunos
+GROUP BY
+    disciplina;
 
 
 
