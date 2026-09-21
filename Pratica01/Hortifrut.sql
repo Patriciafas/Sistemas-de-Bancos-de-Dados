@@ -101,11 +101,13 @@ SELECT
 FROM
     itens_venda
 WHERE
-    categoria IN ('Legume', 'Verdura')
-    AND valor_unitario BETWEEN 3.00 AND 5.00 /*Filtra legumes e verduras com preço entre 3 e 5 (IN e BETWEEN).*/
+    categoria IN ('Legume', 'Verdura') /*IN É LISTAGEM*/
+    AND 
+    valor_unitario BETWEEN 3.00 AND 5.00 
+    /*Filtra legumes e verduras com preço entre 3 e 5 (IN e BETWEEN).*/
 ORDER BY
     valor_unitario DESC,
-    venda_id ASC;
+    venda_id;
 
 SELECT
     venda_id,
@@ -115,7 +117,8 @@ SELECT
 FROM
     itens_venda
 WHERE
-    produto_nome LIKE /*COMO*/ 'Batata%' /*Busca produtos que começam com "Batata" (LIKE 'Batata%').*/
+    produto_nome LIKE 'Batata%' /* LIKE = COM. % = FILTRA AS PALAVRAS COM BATATA
+    Busca produtos que começam com "Batata" (LIKE 'Batata%').*/
 ORDER BY
     data_venda,
     venda_id;
@@ -127,7 +130,7 @@ SELECT DISTINCT
 FROM
     itens_venda
 WHERE
-    bairro_entrega IS NOT NULL /*Lista as vendas com entrega (IS NOT NULL), sem repetição.*/
+    bairro_entrega IS NOT NULL /*Lista as vendas com entrega que não são vazias (IS NOT NULL).*/
 ORDER BY
     venda_id;
 
@@ -138,7 +141,7 @@ SELECT
     quantidade,
     unidade,
     valor_unitario,
-    ROUND(quantidade * valor_unitario, 2) AS valor_item 
+    ROUND(quantidade * valor_unitario, 2) AS valor_item /*Calcula com resultados com 2 casas apos a virgula*/
 FROM
     itens_venda
 ORDER BY
