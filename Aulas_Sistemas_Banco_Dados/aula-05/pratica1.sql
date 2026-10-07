@@ -1,4 +1,4 @@
--- Active: 1791239339235@@127.0.0.1@5432@bd_hortifruit@public
+-- Active: 1791332389549@@127.0.0.1@5432@bd_vendas@public
 
 DROP TABLE IF EXISTS itens_venda;
 DROP TABLE IF EXISTS vendas;
@@ -378,28 +378,30 @@ GROUP BY
 ORDER BY
     faturamento DESC;
 
-SELECT 
+-- Consulta 9. Apresentar, para cada categoria, a quantidade de itens (itens), a quantidade total vendida (qtd_total) e o faturamento (faturamento), ordenado pela categoria. A quantidade total só tem significado quando soma valores da mesma unidade de medida, e o resultado deve respeitar essa regra (aula prática 04, seção 7.4).
+SELECT
     p.categoria,
     COUNT(*) AS qtd_itens,
     SUM(i.quantidade) AS quantidade,
-    ROUND(SUM(i.quantidade * i.valor_unitario), 2) AS faturamento
+    ROUND(SUM(i.quantidade * i.valor_unitario),2) AS faturamento
 FROM
-        itens_venda AS id
+        itens_venda AS i
     INNER JOIN
-        produto AS produto_id
-    ON 
+        produto AS p
+    ON
         p.id = i.produto_id
 GROUP BY
     p.categoria,
     p.unidade
-ORDER BY 
+ORDER BY
     categoria;
 
---LEFT JOIN: produto que nao estao em itens_venda, quantidade vendida de cada produto
+-- LEFT JOIN: produto que não estão em itens_venda, quantidade vendida de cada produto
+
 SELECT
     p.id,
     p.nome,
-    COUNT(p.id) AS itens_vendidos
+    COUNT(i.id) AS itens_vendidos
 FROM
         produto AS p
     LEFT JOIN
@@ -410,7 +412,99 @@ GROUP BY
     p.id,
     p.nome
 ORDER BY
+    itens_vendidos,
     p.id;
 
-INSERT INTO  produto(id, nome, categoria, unidade)
+INSERT INTO produto(id, nome, categoria, unidade)
 VALUES (13, 'Pimentao', 'Legume', 'Kg');
+
+
+SELECT
+    *
+FROM
+    itens_venda
+ORDER BY
+    id;
+
+CREATE TABLE vendas(
+    id  INTEGER PRIMARY KEY,
+    data_venda DATE NOT NULL,
+    bairro_entrega TEXT
+);
+
+
+INSERT INTO vendas(id, data_venda, bairro_entrega)
+SELECT DISTINCT
+    venda_id,
+    data_venda,
+    bairro_entrega
+FROM
+    itens_venda;
+
+SELECT
+    *
+FROM
+    vendas;
+
+
+ALTER TABLE itens_venda
+    ADD CONSTRAINT fk_itens_venda_vendas
+    FOREIGN KEY (venda_id) REFERENCES vendas(id);
+
+ALTER TABLE itens_venda
+    DROP COLUMN data_venda,
+    DROP COLUMN bairro_entrega;
+
+-- O preço do tomate ao longo da semana
+-- | data_venda | quantidade | valor_unitario|
+
+SELECT
+    v.data_venda,
+    i.quantidade,
+    i.valor_unitario,
+    p.nome
+FROM
+    vendas AS v
+    INNER JOIN itens_venda AS i ON i.venda_id = v.id
+    INNER JOIN produto AS p ON i.produto_id = p.id
+WHERE
+    --p.id = 5
+    p.nome = 'Tomate'
+ORDER BY
+    data_venda;
+
+ALTER TABLE itens_venda
+    ADD CONSTRAINT uq_itens-venda_venda_produto
+    UNIQUE (venda_id, produto_id);
+ALTER TABLE itens_venda
+    ADD CONSTRAINT ck_itens_venda_quantidade
+    CHECK (quantidade > 0);
+
+
+SELECT
+    v.id,
+    v.data_venda,
+    COALESCE(v.bairro_entrega, 'Retirada no balcao') AS destino,
+    COUNT (*) AS itens,
+    ROUND(SUM(i.quantidade * i.valor_unitario), 2) AS valor_total
+FROM 
+    vendas AS v   
+    INNER JOIN itens_venda AS i ON i.venda_id = v.id 
+
+GROUP BY
+    v.id,
+    v.data_venda,
+    v.bairro_entrega
+ORDER BY 
+   valor_total DESC;
+
+INSERT INTO vendas(id, data_venda, bairro_entrega)
+VALUES (3018, '2026-08-10', 'Centro');
+
+INSERT INTO itens_venda(venda_id, produto_id, quantidade, valor_unitario)
+VALUES
+    (3018, 13, 0.450, 9.98),
+    (3018, 5, 1.120, 8.89),
+    (3018, 1, 1.600, 6.49);
+ 
+--FAZER O ESBOÇO DO DIAGRAMA DE ELEMENTOS DAS 3 TABELAS
